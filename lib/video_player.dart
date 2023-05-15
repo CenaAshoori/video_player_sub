@@ -75,17 +75,6 @@ class DartVLCExampleState extends State<DartVLCExample> {
     }
   }
 
-  TapGestureRecognizer _createRecognizer(String word, int index) {
-    TapGestureRecognizer recognizer = TapGestureRecognizer()
-      ..onTap = () async {
-        player.pause();
-        await translationDialog(word);
-        player.play();
-      };
-
-    return recognizer;
-  }
-
   @override
   Widget build(BuildContext context) {
     bool isTablet;
@@ -146,13 +135,14 @@ class DartVLCExampleState extends State<DartVLCExample> {
                               String word = entry.value;
                               print(word);
                               return TextSpan(
-                                  text: word + ' ',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 24.0,
-                                    backgroundColor: Colors.black54,
-                                  ),
-                                  recognizer: _createRecognizer(word, index));
+                                text: word + ' ',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 24.0,
+                                  backgroundColor: Colors.black54,
+                                ),
+                                // recognizer: _createRecognizer(word, index)
+                              );
                             }).toList()),
                           );
                         // return Text(

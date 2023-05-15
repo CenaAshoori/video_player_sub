@@ -14,8 +14,7 @@ void main() async {
   await windowManager.ensureInitialized();
 
   WindowOptions windowOptions = const WindowOptions(
-    // size: Size(800, 600),
-
+    size: Size(800, 600),
     center: true,
     backgroundColor: Color.fromARGB(255, 0, 0, 0),
     skipTaskbar: false,
@@ -39,6 +38,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Video Player',
       // home: FilePickerDemo(),
       // home: DartVLCExample(),

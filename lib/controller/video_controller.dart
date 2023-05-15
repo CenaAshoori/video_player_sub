@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/src/gestures/drag_details.dart';
 import 'package:get/get.dart';
 import 'package:subtitle/subtitle.dart';
 import 'package:file_selector/file_selector.dart';
 import 'package:path/path.dart' as path;
+import 'package:window_manager/window_manager.dart';
 
 class MyVideoController extends GetxController {
   late SubtitleController subcontroller;
