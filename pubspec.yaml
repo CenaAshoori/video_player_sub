@@ -36,11 +36,12 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-  chewie: ^1.5.0
-  video_player: ^2.6.1
   get: ^4.6.5
   subtitle: ^0.1.0-beta.3
-  file_picker: any
+  file_selector: ^0.9.3
+  dart_vlc: ^0.4.0
+  window_manager: ^0.3.2
+  shared_preferences: ^2.1.1
   # There is no way to load a local video so don't try it at home
   # subtitle_wrapper_package: any
 dev_dependencies:

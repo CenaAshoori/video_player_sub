@@ -1,21 +1,22 @@
 import 'dart:convert';
-import 'package:file_picker/file_picker.dart';
+import 'dart:io';
 import 'package:get/get.dart';
 import 'package:subtitle/subtitle.dart';
-import 'package:video_player/video_player.dart';
+import 'package:file_selector/file_selector.dart';
+import 'package:path/path.dart' as path;
 
 class MyVideoController extends GetxController {
   late SubtitleController subcontroller;
-  final controller = VideoPlayerController.network(
-    'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4',
-    // closedCaptionFile: SubtitleData('https://example.com/subtitles.vtt'),
-  );
+  // final controller = VideoPlayerController.network(
+  //   'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4',
+  //   // closedCaptionFile: SubtitleData('https://example.com/subtitles.vtt'),
+  // );
 
   var url = Uri.parse(
       'https://brenopolanski.github.io/html5-video-webvtt-example/MIB2-subtitles-pt-BR.vtt');
 
   MyVideoController() {
-    subInit();
+    // subInit();
   }
 
   var _isInitialized = false.obs;
@@ -32,28 +33,29 @@ class MyVideoController extends GetxController {
   }
 
   var _duration = Duration(seconds: 0).obs;
-  Duration get duration => _duration.value;
-  set duration(Duration dur) {
+  Duration get currentPosition => _duration.value;
+  set currentPosition(Duration dur) {
     _duration(dur);
   }
 
   Future<void> subInit() async {
     isInitialized = false;
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['srt', 'vtt'],
+    const XTypeGroup typeGroup = XTypeGroup(
+      label: 'subtitle',
+      extensions: <String>['srt', 'vtt'],
     );
-    if (result != null) {
-      final myFile = result.files.single.bytes;
+    final XFile? file =
+        await openFile(acceptedTypeGroups: <XTypeGroup>[typeGroup]);
 
+    if (file != null) {
+      final myFile = File(file.path);
       String decodedData =
-          LineSplitter().convert(utf8.decode(myFile!)).join('\n');
+          LineSplitter().convert(await myFile.readAsString()).join('\n');
 
-      print(decodedData);
       subcontroller = SubtitleController(
           provider: SubtitleProvider.fromString(
               data: decodedData,
-              type: subtitleTypeSelector(result.files.single.extension)));
+              type: subtitleTypeSelector(path.extension(myFile.uri.path))));
 
       await subcontroller.initial();
       isInitialized = true;
@@ -63,9 +65,9 @@ class MyVideoController extends GetxController {
   SubtitleType subtitleTypeSelector(String? type) {
     print(type);
     switch (type) {
-      case 'srt':
+      case '.srt':
         return SubtitleType.srt;
-      case 'vtt':
+      case '.vtt':
         return SubtitleType.vtt;
       default:
         return SubtitleType.srt;
